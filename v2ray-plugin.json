@@ -1,0 +1,75 @@
+{
+    "log": {
+        "loglevel": "info"
+    },
+    "outbounds": [{
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {}
+        }, {
+            "tag": "ss_out",
+            "protocol": "freedom",
+            "settings": {
+                "redirect": "127.0.0.1:<ss端口>"
+            }
+        }
+    ],
+
+    "inbounds": [{
+            "port":  < ss端口 > ,
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "<ss加密方式>",
+                "password": "<ss密码>",
+                "network": "tcp"
+            }
+        }, {
+            "tag": "ss_over_ws_with_mux",
+            "port":  < 监听端口，用于前端nginx转发 > ,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "v1.mux.cool",
+                "port": 0,
+                "network": "tcp",
+                "timeout": 0,
+                "followRedirect": false
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "<分流路径1>"
+                }
+            }
+        }, {
+            "tag": "ss_over_ws",
+            "port":  < 监听端口，用于前端nginx转发 > ,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1",
+                "port": 0,
+                "network": "tcp",
+                "timeout": 0,
+                "followRedirect": false
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "<分流路径2>"
+                }
+            }
+        }
+    ],
+
+    "routing": {
+        "settings": {
+            "domainStrategy": "AsIs",
+            "rules": [{
+                    "type": "field",
+                    "inboundTag": ["ss_over_ws, ss_over_ws_with_mux"],
+                    "outboundTag": "ss-out"
+                }
+            ]
+        }
+    }
+
+}
