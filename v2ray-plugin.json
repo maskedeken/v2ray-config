@@ -65,7 +65,7 @@
             "domainStrategy": "AsIs",
             "rules": [{
                     "type": "field",
-                    "inboundTag": ["ss_over_ws, ss_over_ws_with_mux"],
+                    "inboundTag": ["ss_over_ws", "ss_over_ws_with_mux"],
                     "outboundTag": "ss_out"
                 }
             ]
