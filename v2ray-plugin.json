@@ -66,7 +66,7 @@
             "rules": [{
                     "type": "field",
                     "inboundTag": ["ss_over_ws, ss_over_ws_with_mux"],
-                    "outboundTag": "ss-out"
+                    "outboundTag": "ss_out"
                 }
             ]
         }
